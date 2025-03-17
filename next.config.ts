@@ -1,7 +1,5 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
+export default {
+  experimental: {
+    appDir: true,
+  },
 };
-
-export default nextConfig;
