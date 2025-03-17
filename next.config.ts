@@ -1,9 +1,5 @@
-export default {
-  experimental: {
-    appDir: true,
-  },
-  webpack(config) {
-    config.resolve.modules.push(__dirname + '/src');
-    return config;
-  },
-};
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {};
+
+export default nextConfig;
