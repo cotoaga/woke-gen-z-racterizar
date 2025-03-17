@@ -55,7 +55,6 @@ export default function Home() {
         <option value="genz-woke">GenZ Woke</option>
         <option value="agile-values">Agile Values at Work</option>
       </select>
-
       <div style={{ height: '400px', overflowY: 'auto', border: '1px solid #ddd', padding: '1rem' }}>
         {messages.map((msg, i) => (
           <div key={i} style={{ textAlign: msg.sender === 'user' ? 'right' : 'left' }}>
