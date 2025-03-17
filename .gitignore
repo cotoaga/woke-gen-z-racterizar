@@ -1,0 +1,22 @@
+# Dependencies
+/node_modules
+
+# Next.js
+/.next
+/out
+
+# Build artifacts
+*.tsbuildinfo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Vercel
+/.vercel
+
+# Mac OS
+.DS_Store
+
+# Env files
+.env*
