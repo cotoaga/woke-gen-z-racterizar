@@ -2,59 +2,42 @@
 import { useState, useEffect } from 'react';
 
 export default function Home() {
-  console.log('Home component rendering');
-
   const [style, setStyle] = useState('genz-woke');
-  console.log('Style initialized:', style);
-
   const [messages, setMessages] = useState<{ sender: string; text: string }[]>([]);
-  console.log('Messages initialized:', messages);
-
   const [input, setInput] = useState('');
-  console.log('Input initialized:', input);
 
   useEffect(() => {
-    console.log('useEffect triggered for style:', style);
     setMessages([{ sender: 'eliza', text: 'Bestie! ✨ Ready to vibe-check your soul?' }]);
-    console.log('Messages set in useEffect:', messages);
   }, [style]);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log('handleSubmit triggered');
     e.preventDefault();
-    console.log('Form prevented default');
 
-    if (!input.trim()) {
-      console.log('Input empty, returning');
-      return;
-    }
-    console.log('Input trimmed, proceeding:', input);
+    if (!input.trim()) return;
 
-    setMessages(prev => {
-      console.log('Setting initial messages:', prev);
-      return [...prev, { sender: 'user', text: input }];
-    });
-    console.log('User message added to state');
+    try {
+      setMessages(prev => [...prev, { sender: 'user', text: input }]);
 
-    const elizaRes = await fetch(`/api/eliza?input=${encodeURIComponent(input)}&style=${style}`).then(res => res.text());
-    console.log('ELIZA response:', elizaRes);
+      const elizaRes = await fetch(`/api/eliza?input=${encodeURIComponent(input)}&style=${style}`).then(res => {
+        if (!res.ok) throw new Error(`ELIZA fetch failed: ${res.status}`);
+        return res.text();
+      }).catch(err => 'Oops, ELIZA vibes are off—try again!');
+      const racterRes = await fetch(`/api/racter?input=${encodeURIComponent(input)}&style=${style}`).then(res => {
+        if (!res.ok) throw new Error(`RACTER fetch failed: ${res.status}`);
+        return res.text();
+      }).catch(err => 'Oops, RACTER vibes are off—try again!');
 
-    const racterRes = await fetch(`/api/racter?input=${encodeURIComponent(input)}&style=${style}`).then(res => res.text());
-    console.log('RACTER response:', racterRes);
-
-    setMessages(prev => {
-      console.log('Setting final messages:', prev);
-      return [
+      setMessages(prev => [
         ...prev,
         { sender: 'eliza', text: elizaRes },
         { sender: 'racter', text: racterRes },
         { sender: 'eliza', text: Math.random() < 0.3 ? 'Um, Racter, your energy’s giving chaos—chill, king!' : '' }
-      ].filter(msg => msg.text);
-    });
-    console.log('All messages set in state');
+      ].filter(msg => msg.text));
 
-    setInput('');
-    console.log('Input cleared');
+      setInput('');
+    } catch (error) {
+      console.error('Error in handleSubmit:', error); // Keep this for runtime errors
+    }
   };
 
   return (

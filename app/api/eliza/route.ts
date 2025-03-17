@@ -1,25 +1,20 @@
 import { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {
-  console.log('ELIZA API called');
   const { searchParams } = new URL(request.url);
-  console.log('Search params parsed:', searchParams.toString());
   const input = searchParams.get('input') || '';
   const style = searchParams.get('style') || 'genz-woke';
-  console.log('Input:', input, 'Style:', style);
 
-  const patterns: { [key: string]: { pattern?: RegExp; response: string; default?: boolean }[] } = {
+  const patterns: { [key: string]: { pattern?: RegExp; response: (input: string) => string; default?: boolean }[] } = {
     'genz-woke': [
-      { pattern: /feel/i, response: 'Oof, bestie, let’s unpack that feel—how’s it vibing with your aura?' },
-      { pattern: /lost/i, response: 'Lost? Babe, we’re manifesting a glow-up—where’s your energy at?' },
-      { pattern: /stressed/i, response: 'Stress is giving toxic energy—let’s yeet that vibe, fam!' },
-      { default: true, response: 'Spill more tea, fam—what’s the universe serving you today?' }
+      { pattern: /feel (sad|down|depressed)/i, response: (input) => `Oh no, bestie! 😢 Feeling ${input.match(/feel (sad|down|depressed)/i)?.[1]}? Let’s manifest some joy—try a self-care ritual! ✨` },
+      { pattern: /lost/i, response: (input) => `Lost? Babe, we’re plotting a glow-up journey—tell me where you’re at, and I’ll guide your vibes! 🌟` },
+      { pattern: /stressed|anxious/i, response: (input) => `Stress or anxiety? Yikes, fam! Let’s yeet that energy with a mindfulness break—breathe with me! 🧘‍♀️` },
+      { pattern: /happy|excited/i, response: (input) => `Yaaas, bestie! 😍 Feeling ${input.match(/happy|excited/i)?.[0]}? Let’s amplify that vibe—share the tea! 🎉` },
+      { default: true, response: (input) => `Spill more tea, fam—what’s the universe serving you today? I’m here to vibe-check! 💅` }
     ]
   };
-  console.log('Patterns loaded for style:', style);
 
   const match = patterns[style]?.find(p => p.pattern?.test(input)) || patterns[style]?.find(p => p.default);
-  console.log('Match found:', match);
-
-  return new Response(match?.response || 'Oops, bestie—vibes are off, try again!');
+  return new Response(match?.response(input) || 'Oops, bestie—vibes are off—try again!');
 }
