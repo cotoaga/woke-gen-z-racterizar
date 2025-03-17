@@ -7,7 +7,11 @@ export default function Home() {
   const [input, setInput] = useState('');
 
   useEffect(() => {
-    setMessages([{ sender: 'eliza', text: 'Bestie! ✨ Ready to vibe-check your soul?' }]);
+    if (style === 'genz-woke') {
+      setMessages([{ sender: 'eliza', text: 'Bestie! ✨ Ready to vibe-check your soul?' }]);
+    } else if (style === 'agile-values') {
+      setMessages([{ sender: 'eliza', text: 'Namaste, dear soul! 🌿 Let’s align your agile chakras—ready to flow?' }]);
+    }
   }, [style]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -22,6 +26,7 @@ export default function Home() {
         if (!res.ok) throw new Error(`ELIZA fetch failed: ${res.status}`);
         return res.text();
       }).catch(err => 'Oops, ELIZA vibes are off—try again!');
+
       const racterRes = await fetch(`/api/racter?input=${encodeURIComponent(input)}&style=${style}`).then(res => {
         if (!res.ok) throw new Error(`RACTER fetch failed: ${res.status}`);
         return res.text();
@@ -31,12 +36,12 @@ export default function Home() {
         ...prev,
         { sender: 'eliza', text: elizaRes },
         { sender: 'racter', text: racterRes },
-        { sender: 'eliza', text: Math.random() < 0.3 ? 'Um, Racter, your energy’s giving chaos—chill, king!' : '' }
+        { sender: 'eliza', text: Math.random() < 0.3 ? `Um, Racter, ${style === 'genz-woke' ? 'your energy’s giving chaos—chill, king!' : 'your dogma disrupts our flow—let’s harmonize! 🌈'} ` : '' }
       ].filter(msg => msg.text));
 
       setInput('');
     } catch (error) {
-      console.error('Error in handleSubmit:', error); // Keep this for runtime errors
+      console.error('Error in handleSubmit:', error);
     }
   };
 
@@ -48,6 +53,7 @@ export default function Home() {
         style={{ width: '100%', padding: '0.5rem', marginBottom: '1rem', borderRadius: '4px', border: '1px solid #ddd' }}
       >
         <option value="genz-woke">GenZ Woke</option>
+        <option value="agile-values">Agile Values at Work</option>
       </select>
       <div style={{ height: '400px', overflowY: 'auto', border: '1px solid #ddd', padding: '1rem' }}>
         {messages.map((msg, i) => (
