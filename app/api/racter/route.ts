@@ -6,31 +6,21 @@ export async function GET(request: NextRequest) {
   const style = searchParams.get('style') || 'genz-woke';
 
   if (style === 'genz-woke') {
-    const buzzwords = ['synergy', 'vibes', 'late-stage capitalism', 'slay', 'praxis', 'disrupt', 'entropy', 'cyber-revolution'];
+    const buzzwords = ['stan', 'rizz', 'sus', 'bussin’', 'frfr', 'slay', 'drip', 'yeet', 'vibes', 'synergy', 'praxis', 'disrupt'];
+    const contexts = ['aesthetic void', 'TikTok multiverse', 'capitalist dystopia', 'shadow of the algorithm', 'fractured metaverse'];
+    const actions = ['spins into chaos', 'drops the mic on', 'ghosts the vibe of', 'shatters the ego', 'whispers rebellion'];
+
     const base = input.split(' ').map(word => Math.random() < 0.5 ? `${word} ${buzzwords[Math.floor(Math.random() * buzzwords.length)]}` : word).join(' ');
-    const contexts = ['void of digital praxis', 'shadow of the algorithm', 'fractured metaverse', 'echoes of late-stage capitalism'];
-    const actions = ['dances wickedly', 'shatters the ego', 'whispers rebellion', 'collapses into chaos'];
-
-    const rants = [
-      `${base} ${actions[Math.floor(Math.random() * actions.length)]} in the ${contexts[Math.floor(Math.random() * contexts.length)]}.`,
-      `Amid ${base}, a ${buzzwords[Math.floor(Math.random() * buzzwords.length)]}-fueled uprising consumes the ${contexts[Math.floor(Math.random() * contexts.length)]}!`,
-      `The ${base} fractures, unleashing ${buzzwords[Math.floor(Math.random() * buzzwords.length)]} into the ${contexts[Math.floor(Math.random() * contexts.length)]}—slay, comrade!`
-    ];
-
-    return new Response(rants[Math.floor(Math.random() * rants.length)]);
+    const rant = `${base} ${actions[Math.floor(Math.random() * actions.length)]} in the ${contexts[Math.floor(Math.random() * contexts.length)]}! ${buzzwords[Math.floor(Math.random() * buzzwords.length)]} ignites the ${contexts[Math.floor(Math.random() * contexts.length)]}! Slay or be slayed, fam!`;
+    return new Response(rant);
   } else if (style === 'agile-values') {
-    const buzzwords = ['timebox', 'velocity', 'sprint', 'backlog', 'ceremony', 'self-organization', 'Scrum Guide', 'purity'];
+    const buzzwords = ['timebox', 'velocity', 'sprint', 'backlog', 'ceremony', 'self-organization', 'Scrum Guide', 'purity', 'kanban', 'retro'];
+    const contexts = ['sacred Scrum framework', 'holy sprint cycle', 'temple of self-organization', 'dogma of the Scrum Guide', 'agile vortex'];
+    const actions = ['violates the sacred', 'shatters the purity of', 'corrupts the ceremony of', 'defies the timebox of', 'desecrates the flow of'];
+
     const base = input.split(' ').map(word => Math.random() < 0.5 ? `${word} ${buzzwords[Math.floor(Math.random() * buzzwords.length)]}` : word).join(' ');
-    const contexts = ['sacred Scrum framework', 'holy sprint cycle', 'temple of self-organization', 'dogma of the Scrum Guide'];
-    const actions = ['violates the sacred', 'shatters the purity of', 'corrupts the ceremony of', 'defies the timebox of'];
-
-    const rants = [
-      `HERESY DETECTED! ${base} ${actions[Math.floor(Math.random() * actions.length)]} ${contexts[Math.floor(Math.random() * contexts.length)]}! REPENT OR BE EXILED! 📜`,
-      `THE SCRUM GUIDE FORBIDS THIS! ${base} MUST BE ${buzzwords[Math.floor(Math.random() * buzzwords.length)]}-ALIGNED IN THE ${contexts[Math.floor(Math.random() * contexts.length)]}! 15 MINUTES OR BUST! ⏱️`,
-      `UNACCEPTABLE! ${base} THREATENS THE ${contexts[Math.floor(Math.random() * contexts.length)]}! ONLY THREE ROLES ALLOWED—PURIFY THIS BLASPHEMY! 🚨`
-    ];
-
-    return new Response(rants[Math.floor(Math.random() * rants.length)]);
+    const rant = `HERESY DETECTED! ${base} ${actions[Math.floor(Math.random() * actions.length)]} ${contexts[Math.floor(Math.random() * contexts.length)]}! ${buzzwords[Math.floor(Math.random() * buzzwords.length)]}-ALIGNED PURITY RESTORED OR EXILE! 📜`;
+    return new Response(rant);
   }
 
   return new Response('Oops, vibes are off—try again!');
