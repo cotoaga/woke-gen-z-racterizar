@@ -1,10 +1,12 @@
 "use client";
 import { useState, useEffect } from 'react';
 
+type ConsultingStyle = "genz" | "orthodox" | "treehugger" | "corporate";
+
 export default function ConsultingBot() {
     const [messages, setMessages] = useState<{sender: string; text: string}[]>([]);
     const [input, setInput] = useState("");
-    const [style, setStyle] = useState("genz");
+    const [style, setStyle] = useState<ConsultingStyle>("genz");
 
     // Define consulting personas
     const consultingStyles = {
@@ -301,7 +303,7 @@ export default function ConsultingBot() {
     }, [style]);
 
     const racterize = (text: string) => {
-        const currentBuzzwords = consultingStyles[style as keyof typeof consultingStyles].buzzwords;
+        const currentBuzzwords = consultingStyles[style].buzzwords;
         const words = text.split(" ");
         const newWords = words.map(word => 
             Math.random() < 0.1 ? `${word} ${currentBuzzwords[Math.floor(Math.random() * currentBuzzwords.length)]}` : word
@@ -310,7 +312,7 @@ export default function ConsultingBot() {
     };
 
     const generateResponse = (input: string) => {
-        const currentStyle = consultingStyles[style as keyof typeof consultingStyles];
+        const currentStyle = consultingStyles[style];
         const matchedPattern = currentStyle.patterns.find(p => input.match(p.pattern));
         
         if (matchedPattern) {
@@ -353,10 +355,11 @@ export default function ConsultingBot() {
             <select
                 value={style}
                 onChange={(e) => {
-                    setStyle(e.target.value);
+                    const newStyle = e.target.value as ConsultingStyle;
+                    setStyle(newStyle);
                     setMessages([{
                         sender: "bot",
-                        text: consultingStyles[e.target.value as keyof typeof consultingStyles].greeting
+                        text: consultingStyles[newStyle].greeting
                     }]);
                 }}
                 style={{
